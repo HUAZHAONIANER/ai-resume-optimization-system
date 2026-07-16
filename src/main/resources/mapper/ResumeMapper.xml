@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.resumeai.dao.ResumeDao">
+
+    <resultMap id="resumeMap" type="org.example.resumeai.entity.Resume">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="name" column="name"/>
+        <result property="education" column="education"/>
+        <result property="school" column="school"/>
+        <result property="major" column="major"/>
+        <result property="skills" column="skills"/>
+        <result property="experience" column="experience"/>
+        <result property="content" column="content"/>
+        <result property="filePath" column="file_path"/>
+        <result property="optimizedContent" column="optimized_content"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="resumeMap">
+        select * from resume order by create_time desc
+    </select>
+
+    <select id="findByUserId" parameterType="Integer" resultMap="resumeMap">
+        select * from resume where user_id = #{userId} order by create_time desc
+    </select>
+
+    <select id="findResume" parameterType="org.example.resumeai.entity.Resume" resultMap="resumeMap">
+        select * from resume
+        <where>
+            <if test="name != null and name != ''">
+                and name like concat('%', #{name}, '%')
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="school != null and school != ''">
+                and school like concat('%', #{school}, '%')
+            </if>
+            <if test="major != null and major != ''">
+                and major like concat('%', #{major}, '%')
+            </if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="findById" parameterType="Integer" resultMap="resumeMap">
+        select * from resume where id = #{id}
+    </select>
+
+    <insert id="insertResume" parameterType="org.example.resumeai.entity.Resume">
+        insert into resume (user_id, name, education, school, major, skills,
+                            experience, content, file_path, optimized_content, create_time)
+        values (#{userId}, #{name}, #{education}, #{school}, #{major}, #{skills},
+                #{experience}, #{content}, #{filePath}, #{optimizedContent}, now())
+    </insert>
+
+    <update id="updateResume" parameterType="org.example.resumeai.entity.Resume">
+        update resume
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="education != null and education != ''">
+                education = #{education},
+            </if>
+            <if test="school != null and school != ''">
+                school = #{school},
+            </if>
+            <if test="major != null and major != ''">
+                major = #{major},
+            </if>
+            <if test="skills != null and skills != ''">
+                skills = #{skills},
+            </if>
+            <if test="experience != null and experience != ''">
+                experience = #{experience},
+            </if>
+            <if test="content != null and content != ''">
+                content = #{content},
+            </if>
+            <if test="filePath != null and filePath != ''">
+                file_path = #{filePath},
+            </if>
+            <if test="optimizedContent != null and optimizedContent != ''">
+                optimized_content = #{optimizedContent},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteResume" parameterType="Integer">
+        delete from resume where id = #{id}
+    </delete>
+
+</mapper>

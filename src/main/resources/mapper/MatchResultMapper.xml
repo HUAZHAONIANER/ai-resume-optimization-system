@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.resumeai.dao.MatchResultDao">
+
+    <resultMap id="matchResultMap" type="org.example.resumeai.entity.MatchResult">
+        <id property="id" column="id"/>
+        <result property="resumeId" column="resume_id"/>
+        <result property="jobId" column="job_id"/>
+        <result property="matchScore" column="match_score"/>
+        <result property="analysis" column="analysis"/>
+        <result property="suggestion" column="suggestion"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="matchResultMap">
+        select * from match_result order by create_time desc
+    </select>
+
+    <select id="findByResumeId" parameterType="Integer" resultMap="matchResultMap">
+        select * from match_result where resume_id = #{resumeId} order by create_time desc
+    </select>
+
+    <select id="findByJobId" parameterType="Integer" resultMap="matchResultMap">
+        select * from match_result where job_id = #{jobId} order by create_time desc
+    </select>
+
+    <select id="findById" parameterType="Integer" resultMap="matchResultMap">
+        select * from match_result where id = #{id}
+    </select>
+
+    <insert id="insertMatchResult" parameterType="org.example.resumeai.entity.MatchResult">
+        insert into match_result (resume_id, job_id, match_score, analysis, suggestion, create_time)
+        values (#{resumeId}, #{jobId}, #{matchScore}, #{analysis}, #{suggestion}, now())
+    </insert>
+
+    <delete id="deleteMatchResult" parameterType="Integer">
+        delete from match_result where id = #{id}
+    </delete>
+
+</mapper>

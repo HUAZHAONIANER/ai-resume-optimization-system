@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.resumeai.dao.JobDao">
+
+    <resultMap id="jobMap" type="org.example.resumeai.entity.Job">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="company" column="company"/>
+        <result property="description" column="description"/>
+        <result property="requirements" column="requirements"/>
+        <result property="salary" column="salary"/>
+        <result property="location" column="location"/>
+        <result property="type" column="type"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="jobMap">
+        select * from job order by create_time desc
+    </select>
+
+    <select id="findJob" parameterType="org.example.resumeai.entity.Job" resultMap="jobMap">
+        select * from job
+        <where>
+            <if test="title != null and title != ''">
+                and title like concat('%', #{title}, '%')
+            </if>
+            <if test="company != null and company != ''">
+                and company like concat('%', #{company}, '%')
+            </if>
+            <if test="location != null and location != ''">
+                and location like concat('%', #{location}, '%')
+            </if>
+            <if test="type != null and type != ''">
+                and type = #{type}
+            </if>
+            <if test="salary != null and salary != ''">
+                and salary = #{salary}
+            </if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="findById" parameterType="Integer" resultMap="jobMap">
+        select * from job where id = #{id}
+    </select>
+
+    <insert id="insertJob" parameterType="org.example.resumeai.entity.Job">
+        insert into job (title, company, description, requirements, salary, location, type, create_time)
+        values (#{title}, #{company}, #{description}, #{requirements}, #{salary}, #{location}, #{type}, now())
+    </insert>
+
+    <update id="updateJob" parameterType="org.example.resumeai.entity.Job">
+        update job
+        <set>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="company != null and company != ''">
+                company = #{company},
+            </if>
+            <if test="description != null and description != ''">
+                description = #{description},
+            </if>
+            <if test="requirements != null and requirements != ''">
+                requirements = #{requirements},
+            </if>
+            <if test="salary != null and salary != ''">
+                salary = #{salary},
+            </if>
+            <if test="location != null and location != ''">
+                location = #{location},
+            </if>
+            <if test="type != null and type != ''">
+                type = #{type},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteJob" parameterType="Integer">
+        delete from job where id = #{id}
+    </delete>
+
+</mapper>
