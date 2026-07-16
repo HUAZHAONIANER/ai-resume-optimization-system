@@ -1,7 +1,5 @@
 # 基于AI大模型的大学生简历智能优化与岗位匹配系统
 
-![Project Logo](https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20AI%20resume%20optimization%20system%20logo%20with%20modern%20gradient%20colors%20blue%20purple%20theme&image_size=square_hd)
-
 ## 📋 项目概述
 
 本系统是一个基于AI大模型的大学生简历智能优化与岗位匹配平台，旨在帮助大学生提升求职竞争力。系统整合了**阿里云通义千问大模型**，实现简历的智能优化和岗位的精准匹配分析。
